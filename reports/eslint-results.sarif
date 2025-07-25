@@ -7,18 +7,54 @@
         "driver": {
           "name": "ESLint",
           "informationUri": "https://eslint.org",
-          "rules": [],
+          "rules": [
+            {
+              "id": "security/detect-eval-with-expression",
+              "helpUri": "https://github.com/eslint-community/eslint-plugin-security/blob/main/docs/rules/detect-eval-with-expression.md",
+              "properties": {
+                "category": "Possible Security Vulnerability"
+              },
+              "shortDescription": {
+                "text": "Detects \"eval(variable)\" which can allow an attacker to run arbitrary code inside your process."
+              }
+            }
+          ],
           "version": "9.31.0"
         }
       },
       "artifacts": [
         {
           "location": {
-            "uri": "file:///C:/SSD%20Labs/Lab08-requiredfiles/eslint.config.mjs"
+            "uri": "file:///C:/SSD%20Labs/Lab08-requiredfiles/test.js"
           }
         }
       ],
-      "results": []
+      "results": [
+        {
+          "level": "error",
+          "message": {
+            "text": "eval with argument of type Identifier"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/SSD%20Labs/Lab08-requiredfiles/test.js",
+                  "index": 0
+                },
+                "region": {
+                  "startLine": 15,
+                  "startColumn": 16,
+                  "endLine": 15,
+                  "endColumn": 26
+                }
+              }
+            }
+          ],
+          "ruleId": "security/detect-eval-with-expression",
+          "ruleIndex": 0
+        }
+      ]
     }
   ]
 }

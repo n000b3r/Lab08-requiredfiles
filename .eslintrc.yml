@@ -1,0 +1,22 @@
+root: true
+env:
+  browser: true
+  node:    true
+  es2021:  true
+
+parserOptions:
+  ecmaVersion: 12
+  sourceType: module
+
+plugins:
+  - security
+  - no‑unsanitized
+
+extends:
+  - eslint:recommended
+  - plugin:security/recommended
+  - plugin:no-unsanitized/recommended
+
+rules:
+  no-console: warn
+  security/detect-eval-with-expression: error
