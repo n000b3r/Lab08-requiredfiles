@@ -28,7 +28,8 @@ jobs:
 
       - name: Run ESLint with SARIF output
         run: |
-          npx eslint . \
+          npx eslint simple-node-js-react-npm-app-master \
+            --ext .js,.jsx \
             --format @microsoft/eslint-formatter-sarif \
             --output-file reports/eslint-results.sarif || true
 
