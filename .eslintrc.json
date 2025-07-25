@@ -1,0 +1,25 @@
+{
+  "root": true,
+  "env": {
+    "browser": true,
+    "node":    true,
+    "es2021":  true
+  },
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType":  "module"
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:security/recommended",
+    "plugin:no-unsanitized/recommended"
+  ],
+  "plugins": [
+    "security",
+    "no-unsanitized"
+  ],
+  "rules": {
+    // any overrides you want, e.g.
+    "no-console": "warn"
+  }
+}
