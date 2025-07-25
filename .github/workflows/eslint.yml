@@ -35,7 +35,13 @@ jobs:
       - name: Debug ESLint Output
         run: cat reports/eslint-results.sarif || echo "No SARIF report generated"
 
-      - name: Upload SARIF report
+      - name: Upload SARIF report to Code Scanning
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: reports/eslint-results.sarif
+
+      - name: Upload SARIF as build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: eslint-sarif
+          path: reports/eslint-results.sarif
