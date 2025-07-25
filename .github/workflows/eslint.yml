@@ -1,47 +1,60 @@
 name: ESLint Code Analysis
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+permissions:
+  security-events: write
+  contents: read
 
 jobs:
   eslint:
     runs-on: ubuntu-latest
-    permissions:
-      security-events: write
-      contents: read
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - uses: actions/cache@v4
+      - name: Cache Node.js modules
+        uses: actions/cache@v4
         with:
           path: node_modules
           key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
           restore-keys: ${{ runner.os }}-node-modules
 
-      - run: npm install
+      - name: Install project dependencies
+        run: npm install
 
-      - run: mkdir -p reports
+      - name: Create reports directory
+        run: mkdir -p reports
 
-      - name: Install ESLint & SARIF Formatter
+      - name: Install ESLint, security plugins & SARIF formatter
         run: |
           npm install --save-dev eslint \
-                                @microsoft/eslint-formatter-sarif
+            eslint-plugin-security \
+            eslint-plugin-no-unsanitized \
+            @microsoft/eslint-formatter-sarif
 
       - name: Run ESLint with SARIF output
         run: |
-          npx eslint simple-node-js-react-npm-app-master \
+          npx eslint "simple-node-js-react-npm-app-master/**/*.{js,jsx}" \
             --ext .js,.jsx \
             --format @microsoft/eslint-formatter-sarif \
             --output-file reports/eslint-results.sarif || true
 
-      - name: Debug ESLint Output
-        run: cat reports/eslint-results.sarif || echo "No SARIF report generated"
+      - name: Debug SARIF output
+        run: |
+          echo "SARIF report contents:"
+          cat reports/eslint-results.sarif || echo "No SARIF report generated"
 
       - name: Upload SARIF report to Code Scanning
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: reports/eslint-results.sarif
 
-      - name: Upload SARIF as build artifact
+      - name: Upload SARIF as workflow artifact
         uses: actions/upload-artifact@v4
         with:
           name: eslint-sarif
