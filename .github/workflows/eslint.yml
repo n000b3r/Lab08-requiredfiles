@@ -32,7 +32,8 @@ jobs:
 
       - name: Install ESLint, security plugins & SARIF formatter
         run: |
-          npm install --save-dev eslint \
+          npm install --save-dev \
+            eslint \
             eslint-plugin-security \
             eslint-plugin-no-unsanitized \
             @microsoft/eslint-formatter-sarif
